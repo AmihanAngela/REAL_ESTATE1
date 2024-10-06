@@ -3,6 +3,17 @@
 Public Class The_Property
     Dim func As New MYFUNCTION()
 
+    'get all the properties
+
+
+    'get property by id
+    Function getPropertyById(ByVal id As Integer) As DataTable
+
+        Dim command As New MySqlCommand("SELECT * FROM `the_property` WHERE `id`=@id")
+
+    End Function
+
+
     ' Add a new property
     Function addProperty(ByVal type As Integer,
                          ByVal owner As Integer,

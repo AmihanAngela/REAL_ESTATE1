@@ -25,6 +25,8 @@ Partial Class PropertyForm
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PropertyForm))
         Panel1 = New Panel()
         Panel3 = New Panel()
+        ButtonSEARCHOWNER = New Button()
+        ButtonSEARCH = New Button()
         ComboBoxTYPE = New ComboBox()
         Button_ShowPropertyImage = New Button()
         Button_ShowAllProperty = New Button()
@@ -86,6 +88,8 @@ Partial Class PropertyForm
         ' Panel3
         ' 
         Panel3.BackColor = Color.LemonChiffon
+        Panel3.Controls.Add(ButtonSEARCHOWNER)
+        Panel3.Controls.Add(ButtonSEARCH)
         Panel3.Controls.Add(ComboBoxTYPE)
         Panel3.Controls.Add(Button_ShowPropertyImage)
         Panel3.Controls.Add(Button_ShowAllProperty)
@@ -117,6 +121,28 @@ Partial Class PropertyForm
         Panel3.Name = "Panel3"
         Panel3.Size = New Size(1169, 561)
         Panel3.TabIndex = 3
+        ' 
+        ' ButtonSEARCHOWNER
+        ' 
+        ButtonSEARCHOWNER.BackColor = SystemColors.Highlight
+        ButtonSEARCHOWNER.ForeColor = Color.White
+        ButtonSEARCHOWNER.Location = New Point(950, 65)
+        ButtonSEARCHOWNER.Name = "ButtonSEARCHOWNER"
+        ButtonSEARCHOWNER.Size = New Size(136, 36)
+        ButtonSEARCHOWNER.TabIndex = 46
+        ButtonSEARCHOWNER.Text = "Search Owner"
+        ButtonSEARCHOWNER.UseVisualStyleBackColor = False
+        ' 
+        ' ButtonSEARCH
+        ' 
+        ButtonSEARCH.BackColor = SystemColors.Highlight
+        ButtonSEARCH.ForeColor = Color.White
+        ButtonSEARCH.Location = New Point(405, 22)
+        ButtonSEARCH.Name = "ButtonSEARCH"
+        ButtonSEARCH.Size = New Size(136, 36)
+        ButtonSEARCH.TabIndex = 45
+        ButtonSEARCH.Text = "Search"
+        ButtonSEARCH.UseVisualStyleBackColor = False
         ' 
         ' ComboBoxTYPE
         ' 
@@ -422,7 +448,7 @@ Partial Class PropertyForm
         ' 
         TextBoxID.Location = New Point(242, 22)
         TextBoxID.Name = "TextBoxID"
-        TextBoxID.Size = New Size(249, 31)
+        TextBoxID.Size = New Size(157, 31)
         TextBoxID.TabIndex = 18
         ' 
         ' Label2
@@ -539,4 +565,6 @@ Partial Class PropertyForm
     Friend WithEvents Button_ShowPropertyImage As Button
     Friend WithEvents Button_ShowAllProperty As Button
     Friend WithEvents ComboBoxTYPE As ComboBox
+    Friend WithEvents ButtonSEARCH As Button
+    Friend WithEvents ButtonSEARCHOWNER As Button
 End Class

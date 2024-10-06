@@ -29,7 +29,7 @@
 
     End Sub
 
-    Private Sub Panel_1_Paint(sender As Object, e As PaintEventArgs) Handles Panel_1.Paint
+    Private Sub Panel_1_Paint(sender As Object, e As PaintEventArgs)
 
     End Sub
 
@@ -59,4 +59,14 @@
         Dim salesF As New Sales_Form()
         salesF.Show()
     End Sub
+
+    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles Panel2.Paint
+
+    End Sub
+
+
+
+
 End Class
+
+

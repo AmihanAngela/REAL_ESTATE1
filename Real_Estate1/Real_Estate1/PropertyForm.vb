@@ -17,11 +17,22 @@ Public Class PropertyForm
     End Sub
 
     Private Sub ButtonADD_Click(sender As Object, e As EventArgs) Handles ButtonADD.Click
-        ' Button to add new property
         Try
             Dim type As Integer = ComboBoxTYPE.SelectedValue
-            Dim ownerId As Integer = Convert.ToInt32(TextBoxOWNER_ID.Text)
-            Dim size As Integer = Convert.ToInt32(TextBoxSIZE.Text)
+
+            ' Validate ownerId and propertySize inputs
+            Dim ownerId As Integer
+            If String.IsNullOrWhiteSpace(TextBoxOWNER_ID.Text) OrElse Not Integer.TryParse(TextBoxOWNER_ID.Text, ownerId) Then
+                MessageBox.Show("Owner ID must be a valid number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim propertySize As Integer
+            If String.IsNullOrWhiteSpace(TextBoxSIZE.Text) OrElse Not Integer.TryParse(TextBoxSIZE.Text, propertySize) Then
+                MessageBox.Show("Size must be a valid number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
             Dim price As String = TextBoxPRICE.Text
             Dim address As String = TextBoxADDRESS.Text
             Dim comment As String = TextBoxCOMMENTS.Text
@@ -42,7 +53,7 @@ Public Class PropertyForm
             End If
 
             ' Call addProperty function with all required parameters
-            If theProperty.addProperty(type, ownerId, size, price, address, beds, baths, age, hasBalcony, hasBackyard, hasGarage, hasPool, hasFireplace, hasElevator, comment) Then
+            If theProperty.addProperty(type, ownerId, propertySize, price, address, beds, baths, age, hasBalcony, hasBackyard, hasGarage, hasPool, hasFireplace, hasElevator, comment) Then
                 MessageBox.Show("Property added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 ButtonCLEARFIELDS.PerformClick() ' Clear fields after adding
             Else
@@ -54,15 +65,81 @@ Public Class PropertyForm
     End Sub
 
 
-    Private Sub ButtonEDIT_Click(sender As Object, e As EventArgs) Handles ButtonEDIT.Click
-        'button to edit selected  property
 
+    Private Sub ButtonEDIT_Click(sender As Object, e As EventArgs) Handles ButtonEDIT.Click
+        Try
+            Dim propertyId As Integer
+            If String.IsNullOrWhiteSpace(TextBoxID.Text) OrElse Not Integer.TryParse(TextBoxID.Text, propertyId) Then
+                MessageBox.Show("Please enter a valid property ID.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim type As Integer = ComboBoxTYPE.SelectedValue
+
+            ' Validate ownerId and propertySize inputs
+            Dim ownerId As Integer
+            If String.IsNullOrWhiteSpace(TextBoxOWNER_ID.Text) OrElse Not Integer.TryParse(TextBoxOWNER_ID.Text, ownerId) Then
+                MessageBox.Show("Owner ID must be a valid number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim propertySize As Integer
+            If String.IsNullOrWhiteSpace(TextBoxSIZE.Text) OrElse Not Integer.TryParse(TextBoxSIZE.Text, propertySize) Then
+                MessageBox.Show("Size must be a valid number.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim price As String = TextBoxPRICE.Text
+            Dim address As String = TextBoxADDRESS.Text
+            Dim comment As String = TextBoxCOMMENTS.Text
+            Dim beds As Integer = NumericUpDownBEDS.Value
+            Dim baths As Integer = NumericUpDownBATHS.Value
+            Dim age As Integer = NumericUpDownAGE.Value
+            Dim hasBalcony As Boolean = CheckBoxBALCONY.Checked
+            Dim hasBackyard As Boolean = CheckBoxBACKYARD.Checked
+            Dim hasGarage As Boolean = CheckBoxGARAGE.Checked
+            Dim hasPool As Boolean = CheckBoxPOOL.Checked
+            Dim hasFireplace As Boolean = CheckBoxFIREPLACE.Checked
+            Dim hasElevator As Boolean = CheckBoxELEVATOR.Checked
+
+            If String.IsNullOrWhiteSpace(price) OrElse String.IsNullOrWhiteSpace(address) Then
+                MessageBox.Show("Price and address cannot be empty.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            If theProperty.editProperty(propertyId, type, ownerId, propertySize, price, address, beds, baths, age, hasBalcony, hasBackyard, hasGarage, hasPool, hasFireplace, hasElevator, comment) Then
+                MessageBox.Show("Property updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("Failed to update property.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
+
 
     Private Sub ButtonREMOVE_Click(sender As Object, e As EventArgs) Handles ButtonREMOVE.Click
-        'button to remove selected property
+        Try
+            Dim propertyId As Integer
+            If String.IsNullOrWhiteSpace(TextBoxID.Text) OrElse Not Integer.TryParse(TextBoxID.Text, propertyId) Then
+                MessageBox.Show("Please enter a valid property ID.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
 
+            If MessageBox.Show("Are you sure you want to remove this property?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                If theProperty.removeProperty(propertyId) Then
+                    MessageBox.Show("Property removed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    ButtonCLEARFIELDS.PerformClick() ' Clear fields after removing
+                Else
+                    MessageBox.Show("Failed to remove property.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
+
+
 
     Private Sub ButtonCLEARFIELDS_Click(sender As Object, e As EventArgs) Handles ButtonCLEARFIELDS.Click
         'button to clear fields 
@@ -78,7 +155,10 @@ Public Class PropertyForm
         NumericUpDownBATHS.Value = 0
         NumericUpDownBEDS.Value = 0
 
+        'set the combobox to the first item
+        ComboBoxTYPE.SelectedIndex = 0
 
+        'uncheck all the box
         CheckBoxBALCONY.Checked = False
         CheckBoxBACKYARD.Checked = False
         CheckBoxGARAGE.Checked = False
@@ -101,5 +181,16 @@ Public Class PropertyForm
 
     Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
 
+    End Sub
+
+    Private Sub ButtonSEARCH_Click(sender As Object, e As EventArgs) Handles ButtonSEARCH.Click
+        'search property id
+        'display the result if exists
+
+    End Sub
+
+    Private Sub ButtonSEARCHOWNER_Click(sender As Object, e As EventArgs) Handles ButtonSEARCHOWNER.Click
+        'selected owner
+        'open new form to all the user to select an owner
     End Sub
 End Class
